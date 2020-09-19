@@ -1,0 +1,12 @@
+[
+  {
+    "ProgramName": "価格データ管理",
+    "ControlFlg1": "編集権限",
+    "ControlFlg2": "追加削除権限"
+  },
+  {
+    "ProgramName": "ローラーチェックシート",
+    "ControlFlg1": "データ追加権限",
+    "ControlFlg2": "データ編集権限"
+  }
+]

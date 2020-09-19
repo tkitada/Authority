@@ -3,9 +3,75 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="350" Width="525">
+        Title="{Binding Title}" Height="600" Width="800">
     <Grid>
-        <DataGrid ItemsSource="{Binding AuthorityData}">
-        </DataGrid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="DataGrid_Authority" Grid.Column="0" Grid.Row="0" IsReadOnly="True"
+                  ItemsSource="{Binding AuthorityData}" SelectedIndex="{Binding SelectedIndex}" />
+
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0">プログラム名</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding ProgramName}" />
+
+                <Label Grid.Column="0" Grid.Row="1">PCユーザー</Label>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding PCUser}" />
+
+                <Grid Grid.Column="0" Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0">フラグ1</Label>
+                    <Label Grid.Row="1" Content="{Binding ControlFlg1Name}" />
+                </Grid>
+                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding ControlFlg1Value}" />
+
+                <Grid Grid.Column="0" Grid.Row="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0">フラグ2</Label>
+                    <Label Grid.Row="1" Content="{Binding ControlFlg2Name}" />
+                </Grid>
+                <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding ControlFlg2Value}" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Button>削除</Button>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0">追加</Button>
+            <Button Grid.Column="1" Command="{Binding UpdateCommand}">更新</Button>
+        </Grid>
     </Grid>
 </Window>

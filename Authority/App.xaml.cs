@@ -1,6 +1,5 @@
 ﻿using Authority.Views;
 using Prism.Ioc;
-using Prism.Modularity;
 using System.Windows;
 
 namespace Authority
@@ -17,7 +16,6 @@ namespace Authority
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
         }
     }
 }
