@@ -21,6 +21,16 @@ namespace Authority.Model.ApplicationService
             DBAccess.UpdateAuthority(before, after);
         }
 
+        public void InsertAuthority(AuthorityModel authority)
+        {
+            DBAccess.InsertAuthority(authority);
+        }
+
+        public void DeleteAuthority(AuthorityModel authority)
+        {
+            DBAccess.DeleteAuthority(authority);
+        }
+
         /* details.json作成メソッド */
         //public void SaveDetails()
         //{

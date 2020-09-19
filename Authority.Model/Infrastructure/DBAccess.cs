@@ -22,7 +22,8 @@ namespace Authority.Model.Infrastructure
                 connection.Open();
                 using (var command = new SQLiteCommand(connection))
                 {
-                    var sql = "SELECT * FROM authority";
+                    var sql = @"SELECT * FROM authority
+                                ORDER BY program_name, pc_user";
                     command.CommandText = sql;
                     using (var adaptor = new SQLiteDataAdapter(command))
                     {
@@ -37,6 +38,45 @@ namespace Authority.Model.Infrastructure
                 ControlFlg1 = x["control_flg1"] as int?,
                 ControlFlg2 = x["control_flg2"] as int?
             }).ToList();
+        }
+
+        internal static void DeleteAuthority(AuthorityModel authority)
+        {
+            using (var connection = new SQLiteConnection(connectionString_))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(connection))
+                {
+                    var sql = @"DELETE FROM authority
+                                WHERE program_name = :program_name
+                                    and pc_user = :pc_user";
+                    command.CommandText = sql;
+                    command.Parameters.Add(new SQLiteParameter(":program_name", authority.ProgramName));
+                    command.Parameters.Add(new SQLiteParameter(":pc_user", authority.PCUser));
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        internal static void InsertAuthority(AuthorityModel authority)
+        {
+            using (var connection = new SQLiteConnection(connectionString_))
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(connection))
+                {
+                    var sql = @"INSERT INTO authority(program_name, pc_user, control_flg1, control_flg2)
+                                VALUES (:program_name, :pc_user, :control_flg1, :control_flg2)";
+                    command.CommandText = sql;
+                    command.Parameters.Add(new SQLiteParameter(":program_name", authority.ProgramName));
+                    command.Parameters.Add(new SQLiteParameter(":pc_user", authority.PCUser));
+                    command.Parameters.Add(new SQLiteParameter(":control_flg1", authority.ControlFlg1));
+                    command.Parameters.Add(new SQLiteParameter(":control_flg2", authority.ControlFlg2));
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public static void UpdateAuthority(AuthorityModel before, AuthorityModel after)

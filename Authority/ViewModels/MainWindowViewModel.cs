@@ -34,7 +34,7 @@ namespace Authority.ViewModels
             set
             {
                 SetProperty(ref selectedIndex_, value);
-                DisplayData(value);
+                DisplayData();
             }
         }
 
@@ -79,9 +79,17 @@ namespace Authority.ViewModels
         }
 
         private DelegateCommand updateCommand_;
+        private DelegateCommand insertCommand_;
+        private DelegateCommand deleteCommand_;
 
         public DelegateCommand UpdateCommand =>
             updateCommand_ ?? (updateCommand_ = new DelegateCommand(ExecuteUpdateCommand));
+
+        public DelegateCommand InsertCommand =>
+            insertCommand_ ?? (insertCommand_ = new DelegateCommand(ExecuteInsertCommand));
+
+        public DelegateCommand DeleteCommand =>
+            deleteCommand_ ?? (deleteCommand_ = new DelegateCommand(ExecuteDeleteCommand));
 
         private readonly AuthorityApplicationService appService_ = new AuthorityApplicationService();
 
@@ -90,14 +98,18 @@ namespace Authority.ViewModels
             UpdateDataGrid();
         }
 
-        public void DisplayData(int row)
+        public void DisplayData()
         {
-            if (row < 0) return;
+            if (SelectedIndex < 0) return;
+            if (SelectedIndex >= AuthorityData.Count)
+            {
+                SelectedIndex = AuthorityData.Count - 1;
+            }
 
-            ProgramName = AuthorityData[row].ProgramName;
-            PCUser = AuthorityData[row].PCUser;
-            ControlFlg1Value = AuthorityData[row].ControlFlg1;
-            ControlFlg2Value = AuthorityData[row].ControlFlg2;
+            ProgramName = AuthorityData[SelectedIndex].ProgramName;
+            PCUser = AuthorityData[SelectedIndex].PCUser;
+            ControlFlg1Value = AuthorityData[SelectedIndex].ControlFlg1;
+            ControlFlg2Value = AuthorityData[SelectedIndex].ControlFlg2;
 
             var detail = appService_.GetDetail(ProgramName);
             if (detail != null)
@@ -132,6 +144,36 @@ namespace Authority.ViewModels
                 ControlFlg2 = ControlFlg2Value
             };
             appService_.UpdateAuthority(beforeAuthority, afterAuthority);
+            UpdateDataGrid();
+        }
+
+        private void ExecuteInsertCommand()
+        {
+            if (SelectedIndex < 0) return;
+
+            var authority = new AuthorityModel
+            {
+                ProgramName = ProgramName,
+                PCUser = PCUser,
+                ControlFlg1 = ControlFlg1Value,
+                ControlFlg2 = ControlFlg2Value
+            };
+            appService_.InsertAuthority(authority);
+            UpdateDataGrid();
+        }
+
+        private void ExecuteDeleteCommand()
+        {
+            if (SelectedIndex < 0) return;
+
+            var authority = new AuthorityModel
+            {
+                ProgramName = ProgramName,
+                PCUser = PCUser,
+                ControlFlg1 = ControlFlg1Value,
+                ControlFlg2 = ControlFlg2Value
+            };
+            appService_.DeleteAuthority(authority);
             UpdateDataGrid();
         }
     }
